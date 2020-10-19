@@ -1,0 +1,171 @@
+@import "variables"
+
+html
+  box-sizing: border-box
+*, *:before, *:after
+  box-sizing: inherit
+body
+  margin: 0
+  padding: 0
+  font-family: 'Roboto', 'Arial', sans-serif
+  font-weight: 400
+  font-size: 17px
+  line-height: 1.2
+  color: $primary
+h1, p
+  margin: 0
+button
+  cursor: pointer
+  border: none
+  background: none
+  font-family: inherit
+
+/* focus state only for keyboard users */
+*:focus-visible
+  outline: 1px solid $primary
+*:focus:not(:focus-visible)
+  outline: none
+
+/* to hide element but not from screen readers */
+.visually-hidden
+  position: absolute
+  clip: rect(1px, 1px, 1px, 1px)
+  padding: 0
+  border: 0
+  height: 1px
+  width: 1px
+  overflow: hidden
+
+.container
+  width: 960px
+  margin: 0 auto
+  background: $white
+  padding: 70px 80px
+main
+  padding: 300px 0 280px
+  background: $light-gray url(./img/featured_image.jpg) no-repeat
+  background-size: 100%
+article
+  h1
+    font-size: 45px
+    font-weight: 700
+    margin-bottom: 17px
+  time
+    display: block
+    font-size: 15px
+    font-weight: 300
+    letter-spacing: 0.1em
+    text-transform: uppercase
+    margin-bottom: 6px
+  p
+    line-height: 1.59
+    margin-bottom: 27px
+  p.leading
+    font-size: 27px
+    line-height: 1.38
+    font-weight: 300
+    margin-bottom: 18px
+.comments
+  border-top: 1px solid $light-gray
+  padding-top: 19px
+  margin-top: 31px
+  &-title
+    font-weight: 700
+    text-transform: uppercase
+    margin-bottom: 29px
+  textarea
+    font-family: inherit
+    font-size: 15px
+    font-weight: 300
+    color: inherit
+    resize: none
+    width: 100%
+    height: 80px
+    padding: 15px
+    margin-bottom: 21px
+    border: 1px solid $dark-gray
+    background: $light-gray
+    &::placeholder
+      color: $primary
+  button[type=submit]
+    font-size: 15px
+    font-weight: 700
+    color: $white
+    background: $accent
+    border: none
+    width: 145px
+    height: 40px
+.comment-avatar
+  width: 80px
+  height: 80px
+  border: 1px solid $dark-gray
+  border-radius: 50%
+  margin-right: 20px
+  flex-shrink: 0
+.comment-author
+  font-weight: 700
+.comment-text
+  font-weight: 300
+.comment-btn
+  font-size: 11px
+  font-weight: 700
+  color: $accent
+  text-transform: uppercase
+  padding: 0
+  margin-right: 14px
+
+.new-comment
+  display: flex
+  width: 100%
+  border-bottom: 1px solid $dark-gray
+  padding-bottom: 20px
+.comment-form
+  flex-grow: 1
+  display: flex
+  flex-direction: column
+  align-items: flex-end
+
+.comments-list
+  list-style: none
+  padding: 0
+  margin: 0
+.comments-item
+  margin-top: 30px
+  &.edited
+    & > .comment-wrapper
+      display: none
+  &-main
+    flex-grow: 1
+    padding-top: 3px
+  .comments-item, .new-comment
+    margin-top: 20px
+  .new-comment
+    border: none
+    padding-bottom: 0
+  .comments-item, .reply-comment
+    .comment-avatar
+      width: 60px
+      height: 60px
+  &-top
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: 10px
+  &-btns
+    display: flex
+    margin-top: 13px
+  time
+    font-size: 13px
+    font-weight: 300
+    opacity: 0.5
+  .comments-list
+    padding-left: 100px
+.comment-wrapper
+  display: flex
+.cancel-btn
+  margin-right: 15px
+  vertical-align: middle
+@media (max-width: 960px)
+  .container
+    width: 100%
+
