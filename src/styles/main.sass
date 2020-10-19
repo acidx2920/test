@@ -116,6 +116,7 @@ article
 
 .new-comment
   display: flex
+  align-items: flex-start
   width: 100%
   border-bottom: 1px solid $dark-gray
   padding-bottom: 20px
@@ -150,6 +151,7 @@ article
     display: flex
     align-items: center
     justify-content: space-between
+    flex-wrap: wrap
     margin-bottom: 10px
   &-btns
     display: flex
@@ -166,6 +168,33 @@ article
   margin-right: 15px
   vertical-align: middle
 @media (max-width: 960px)
+  main
+    background-color: $white
+    padding-bottom: 100px
   .container
     width: 100%
+    padding: 35px 40px
+@media (max-width: 768px)
+  main
+    padding-top: 40%
+    padding-bottom: 20px
+  .container
+    padding: 35px 20px
+  .comments-item
+    .comments-list
+      padding-left: 50px
+@media (max-width: 420px)
+  .container
+    padding: 20px 10px
+  .comments-item
+    .comments-item, .new-comment
+      margin-top: 10px
+    .comments-list
+      padding-left: 30px
+  .comments
+    textarea
+      margin-bottom: 15px
+    button[type=submit]
+      width: 120px
+      height: 40px
 

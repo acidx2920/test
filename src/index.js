@@ -2,14 +2,6 @@ import './styles/main.sass';
 import * as service from './service';
 import * as utility from './utility'
 
-const user = {
-  id: 1,
-  name: "Kurt Thompson",
-  avatar: "http://api.randomuser.me/portraits/thumb/men/69.jpg",
-  created_at: "2015-08-11T13:08:25.675Z",
-  updated_at: "2015-08-11T13:08:25.675Z"
-};
-
 document.addEventListener("DOMContentLoaded", () => {
   loadComments();
   document.querySelector('.new-comment-form').addEventListener('submit', submitNewHandler);
@@ -50,6 +42,8 @@ function cancelButtonHandler(event) {
   utility.removeWithChildNodes(formBlock);
   if (formBlock.classList.contains('edit-comment')) {
     parent.classList.remove('edited');
+  } else {
+    parent.querySelector('.comments-item-btns').style.visibility = 'visible'
   }
 }
 /* form handlers */
