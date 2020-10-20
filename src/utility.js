@@ -12,13 +12,6 @@ export function convertTime(isoDate) {
   }
 }
 
-export function removeWithChildNodes(parent) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
-  parent.remove();
-}
-
 export function buildElement(tag, text, classes) {
   const element = document.createElement(tag);
   if (text) {

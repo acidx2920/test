@@ -1,0 +1,35 @@
+html
+  box-sizing: border-box
+*, *:before, *:after
+  box-sizing: inherit
+body
+  margin: 0
+  padding: 0
+  font-family: 'Roboto', 'Arial', sans-serif
+  font-weight: 400
+  font-size: 17px
+  line-height: 1.2
+  color: $primary
+h1, p
+  margin: 0
+button
+  cursor: pointer
+  border: none
+  background: none
+  font-family: inherit
+
+/* focus state only for keyboard users */
+*:focus-visible
+  outline: 1px solid $primary
+*:focus:not(:focus-visible)
+  outline: none
+
+/* to hide element but not from screen readers */
+.visually-hidden
+  position: absolute
+  clip: rect(1px, 1px, 1px, 1px)
+  padding: 0
+  border: 0
+  height: 1px
+  width: 1px
+  overflow: hidden

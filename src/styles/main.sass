@@ -1,41 +1,5 @@
 @import "variables"
-
-html
-  box-sizing: border-box
-*, *:before, *:after
-  box-sizing: inherit
-body
-  margin: 0
-  padding: 0
-  font-family: 'Roboto', 'Arial', sans-serif
-  font-weight: 400
-  font-size: 17px
-  line-height: 1.2
-  color: $primary
-h1, p
-  margin: 0
-button
-  cursor: pointer
-  border: none
-  background: none
-  font-family: inherit
-
-/* focus state only for keyboard users */
-*:focus-visible
-  outline: 1px solid $primary
-*:focus:not(:focus-visible)
-  outline: none
-
-/* to hide element but not from screen readers */
-.visually-hidden
-  position: absolute
-  clip: rect(1px, 1px, 1px, 1px)
-  padding: 0
-  border: 0
-  height: 1px
-  width: 1px
-  overflow: hidden
-
+@import "base"
 .container
   width: 960px
   margin: 0 auto
@@ -92,12 +56,16 @@ article
     font-weight: 700
     color: $white
     background: $accent
-    border: none
+    border: 1px solid $accent
     width: 145px
     height: 40px
+    transition: .3s
+    &:hover
+      background: $white
+      color: $accent
 .comment-avatar
   width: 80px
-  height: 80px
+  height: auto
   border: 1px solid $dark-gray
   border-radius: 50%
   margin-right: 20px
@@ -146,7 +114,6 @@ article
   .comments-item, .reply-comment
     .comment-avatar
       width: 60px
-      height: 60px
   &-top
     display: flex
     align-items: center
@@ -164,6 +131,7 @@ article
     padding-left: 100px
 .comment-wrapper
   display: flex
+  align-items: flex-start
 .cancel-btn
   margin-right: 15px
   vertical-align: middle
@@ -177,24 +145,24 @@ article
 @media (max-width: 768px)
   main
     padding-top: 40%
-    padding-bottom: 20px
+    padding-bottom: 50px
   .container
     padding: 35px 20px
-  .comments-item
-    .comments-list
-      padding-left: 50px
 @media (max-width: 420px)
   .container
     padding: 20px 10px
-  .comments-item
-    .comments-item, .new-comment
-      margin-top: 10px
-    .comments-list
-      padding-left: 30px
   .comments
     textarea
       margin-bottom: 15px
     button[type=submit]
-      width: 120px
+      width: 100px
       height: 40px
-
+  .comment-avatar
+    width: 60px
+    margin-right: 10px
+  .comments-item
+    margin-top: 40px
+    .comments-list
+      padding-left: 70px
+  .cancel-btn
+    margin-right: 10px
