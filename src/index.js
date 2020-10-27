@@ -3,11 +3,18 @@ import * as service from './service';
 import * as utility from './utility'
 
 const perPage = 5;
+const observer = new IntersectionObserver(observerHandler, {threshold: 1});
 let currentPage = 0;
 let isPageLoading = false;
 let isMoreToLoad = true;
 
 /* handlers */
+function observerHandler([entry]) {
+  if (entry && entry.isIntersecting && !isPageLoading) {
+    addCommentsPage(currentPage + 1);
+  }
+}
+
 /*   button handlers */
 function editButtonHandler(event) {
   const parent = event.target.closest('li');
@@ -41,7 +48,7 @@ function cancelButtonHandler(event) {
   if (formBlock.classList.contains('edit-comment')) {
     parent.classList.remove('edited');
   } else {
-    parent.querySelector('.comments-item-btns').style.visibility = 'visible'
+    parent.querySelector('.comments-item-btns').style.visibility = 'visible';
   }
 }
 /*   form handlers */
@@ -71,17 +78,6 @@ function submitEditHandler(event) {
   });
 }
 
-function scrollHandler() {
-  const commentsList = document.querySelector('.comments-list');
-  const scrollBottom = window.pageYOffset + document.documentElement.clientHeight;
-  const bottomOffset = 100;
-  if((scrollBottom >= commentsList.offsetTop + commentsList.offsetHeight + bottomOffset)
-      && !isPageLoading
-      && isMoreToLoad) {
-    addCommentsPage(currentPage + 1);
-  }
-}
-
 function loadComments(pages = 1) {
   service.getComments(pages * perPage).then(data => {
     document.querySelector('.comments > .comments-list').remove();
@@ -99,7 +95,8 @@ function addCommentsPage(page) {
       }
       currentPage++;
     } else {
-      isMoreToLoad = false;
+      observer.disconnect();
+      document.querySelector('.load-more').remove();
     }
     isPageLoading = false;
   });
@@ -176,5 +173,7 @@ function buildCommentList(comments, isNested = false) {
 document.addEventListener("DOMContentLoaded", () => {
   loadComments();
   document.querySelector('.new-comment-form').addEventListener('submit', submitNewHandler);
-  window.addEventListener('scroll', scrollHandler);
+  const sentinel = utility.buildElement('div', null, 'load-more');
+  document.querySelector('main .container').append(sentinel);
+  observer.observe(document.querySelector('.load-more'));
 });
