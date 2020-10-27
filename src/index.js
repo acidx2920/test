@@ -3,10 +3,9 @@ import * as service from './service';
 import * as utility from './utility'
 
 const perPage = 5;
-const observer = new IntersectionObserver(observerHandler, {threshold: 1});
+const observer = new IntersectionObserver(observerHandler, {threshold: 0.1});
 let currentPage = 0;
 let isPageLoading = false;
-let isMoreToLoad = true;
 
 /* handlers */
 function observerHandler([entry]) {
@@ -175,5 +174,5 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector('.new-comment-form').addEventListener('submit', submitNewHandler);
   const sentinel = utility.buildElement('div', null, 'load-more');
   document.querySelector('main .container').append(sentinel);
-  observer.observe(document.querySelector('.load-more'));
+  observer.observe(sentinel);
 });
