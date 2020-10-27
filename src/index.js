@@ -2,14 +2,18 @@ import './styles/main.sass';
 import * as service from './service';
 import * as utility from './utility'
 
+const perPage = 5;
+let currentPage = 0;
+let isPageLoading = false;
+let isMoreToLoad = true;
+
 /* handlers */
 /*   button handlers */
 function editButtonHandler(event) {
   const parent = event.target.closest('li');
   if(!parent.querySelector('.edit-comment')) {
     const formBlock = buildFormBlock(parent.dataset.id, 'edit');
-    const text = parent.querySelector('.comment-text').textContent;
-    formBlock.querySelector('textarea').value = text;
+    formBlock.querySelector('textarea').value = parent.querySelector('.comment-text').textContent;
     parent.classList.add('edited');
     parent.prepend(formBlock);
     formBlock.querySelector('form').addEventListener('submit', submitEditHandler);
@@ -27,7 +31,7 @@ function replyButtonHandler(event) {
 function deleteButtonHandler(event) {
   const commentId = event.target.closest('li').dataset.id;
   service.deleteComment(commentId).then(response => {
-    loadComments();
+    loadComments(currentPage + 1);
   });
 }
 function cancelButtonHandler(event) {
@@ -43,15 +47,17 @@ function cancelButtonHandler(event) {
 /*   form handlers */
 function submitNewHandler(event) {
   event.preventDefault();
-  service.addComment(this.content.value).then(response => {
-    this.reset();
-    loadComments();
+  const form = event.target;
+  service.addComment(form.content.value).then(response => {
+    form.reset();
+    loadComments(currentPage + 1);
   });
 }
 function submitReplyHandler(event) {
   event.preventDefault();
-  service.addComment(this.content.value, this.dataset.parent).then(response => {
-    loadComments();
+  const form = event.target;
+  service.addComment(form.content.value, form.dataset.parent).then(response => {
+    loadComments(currentPage + 1);
   });
 }
 function submitEditHandler(event) {
@@ -65,11 +71,37 @@ function submitEditHandler(event) {
   });
 }
 
-function loadComments() {
-  service.getComments().then(data => {
+function scrollHandler() {
+  const commentsList = document.querySelector('.comments-list');
+  const scrollBottom = window.pageYOffset + document.documentElement.clientHeight;
+  const bottomOffset = 100;
+  if((scrollBottom >= commentsList.offsetTop + commentsList.offsetHeight + bottomOffset)
+      && !isPageLoading
+      && isMoreToLoad) {
+    addCommentsPage(currentPage + 1);
+  }
+}
+
+function loadComments(pages = 1) {
+  service.getComments(pages * perPage).then(data => {
     document.querySelector('.comments > .comments-list').remove();
-    let commentList = buildCommentList(data);
+    const commentList = buildCommentList(data);
     document.querySelector('.comments').append(commentList);
+  });
+}
+function addCommentsPage(page) {
+  isPageLoading = true;
+  service.getComments(perPage, page).then(data => {
+    if(data.length) {
+      const commentList = document.querySelector('.comments > .comments-list');
+      for (let item of data) {
+        commentList.append(buildCommentItem(item));
+      }
+      currentPage++;
+    } else {
+      isMoreToLoad = false;
+    }
+    isPageLoading = false;
   });
 }
 
@@ -91,6 +123,7 @@ function buildFormBlock(parent, type = 'reply') {
 
   return formBlock;
 }
+
 function buildCommentItem(comment, isNested = false) {
   const commentTime = utility.convertTime(comment.created_at);
   const commentItem = utility.buildElement('li', null, 'comments-item');
@@ -129,6 +162,7 @@ function buildCommentItem(comment, isNested = false) {
 
   return commentItem;
 }
+
 function buildCommentList(comments, isNested = false) {
   const commentList = utility.buildElement('ul', null, 'comments-list');
 
@@ -142,4 +176,5 @@ function buildCommentList(comments, isNested = false) {
 document.addEventListener("DOMContentLoaded", () => {
   loadComments();
   document.querySelector('.new-comment-form').addEventListener('submit', submitNewHandler);
+  window.addEventListener('scroll', scrollHandler);
 });
